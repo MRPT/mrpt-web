@@ -1,0 +1,4 @@
+[
+  { "name": "Playlist.GetPlaylists", "params": [], "order": [], "returns" : [] },
+  { "name": "Playlist.GetItems", "params": [], "order": [], "returns" : {} }
+]
