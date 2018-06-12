@@ -1,6 +1,6 @@
 
 
-file(GLOB SRCS "src/*.cpp" "include/mrpt/webs/*.h")
+file(GLOB SRCS "src/*.cpp" "include/mrpt/web/*.h")
 
 add_library(mrpt-web
   SHARED
@@ -8,6 +8,10 @@ add_library(mrpt-web
 )
 
 target_include_directories(mrpt-web PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(mrpt-web
+PUBLIC
+${MRPT_LIBS})
 
 install(TARGETS mrpt-web
   RUNTIME DESTINATION lib

@@ -1,2 +1,4 @@
 build/*
 *.gch
+scratch.txt
+.vscode/*
