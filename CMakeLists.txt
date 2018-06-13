@@ -1,5 +1,4 @@
 
-cmake_minimum_required(VERSION 3.0)
 include("cmake/HunterGate.cmake")
 
 HunterGate(
@@ -13,15 +12,19 @@ PROJECT(mrpt-web)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 set (CMAKE_CXX_STANDARD 14)  # Require C++14
 
-find_package(MRPT REQUIRED)
+find_package(MRPT REQUIRED core poses rtti slam )
 
 find_package( Threads )
 
-hunter_add_package(libjson-rpc-cpp)
-find_package(libjson-rpc-cpp CONFIG REQUIRED)
+hunter_add_package(jsoncpp)
+find_package(jsoncpp REQUIRED)
+
+hunter_add_package(OpenSSL)
+find_package(OpenSSL REQUIRED)
 
 hunter_add_package(Boost COMPONENTS system)
 find_package(Boost CONFIG REQUIRED system)
+include_directories(${Boost_INCLUDE_DIRS})
 
 find_program(JSON_RPC_STUB jsonrpcstub
 HINT "${LIBJSON-RPC-CPP_ROOT}/bin/")

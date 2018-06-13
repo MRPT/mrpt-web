@@ -11,7 +11,8 @@ target_include_directories(mrpt-web PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_link_libraries(mrpt-web
 PUBLIC
-${MRPT_LIBS})
+${MRPT_LIBS}
+jsoncpp_lib_static)
 
 install(TARGETS mrpt-web
   RUNTIME DESTINATION lib

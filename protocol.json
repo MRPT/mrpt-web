@@ -1,0 +1,56 @@
+[
+{
+    "op" : "MethodName",
+    "params" : {},
+    "v" : "1.0",
+    "id" : 1
+},
+{
+    "op" : "advertise",
+    "params" :
+    {
+        "topic" : "TopicName",
+        "type"  : "ClassName"    
+    },
+    "v" : "1.0",
+    "id" : "1"
+},
+{
+    "op" : "unadvertise",
+    "params" :
+    {
+        "topic" : "TopicName"   
+    },
+    "v" : "1.0",
+    "id" : "1"
+},
+{
+    "op" : "subscribe",
+    "params" :
+    {
+        "topic" : "TopicName",
+        "queue_length" : 100,
+        "throttle_rate" : 100
+    },
+    "v" : "1.0",
+    "id" : 2.0
+},
+{
+    "op" : "unsubscribe",
+    "params" :
+    {
+        "topic" : "TopicName"
+    },
+    "v" : "1.0",
+    "id" : "abcd"
+},
+{
+    "op": "publish",
+    "params" :
+    {
+        "topic" : "Goal",
+        "message" : {}    
+    },
+    "v" : "1.0"
+}
+]
