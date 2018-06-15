@@ -79,15 +79,6 @@ namespace mrpt::web {
     class Connection : public std::enable_shared_from_this<Connection> {
       friend class SocketServerBase<socket_type>;
       friend class SocketServer<socket_type>;
-	private:
-	// Add a class which stores the topics which are subscribed by the topic
-	// There is a strong data consistency between the Connection and the SubscriberManager;
-	// class ExtendedData {
-	// private:
-	// 	unordered_set<std::string> topics;
-	// public:
-	// 	vo
-	// };
     public:
       Connection(std::unique_ptr<socket_type> &&socket) noexcept : socket(std::move(socket)), timeout_idle(0), strand(this->socket->get_io_service()), closed(false) {}
 
@@ -118,8 +109,6 @@ namespace mrpt::web {
           : handler_runner(std::move(handler_runner)), socket(new socket_type(std::forward<Args>(args)...)), timeout_idle(timeout_idle), strand(socket->get_io_service()), closed(false) {}
 
       std::shared_ptr<ScopeRunner> handler_runner;
-	  std::unordered_set<std::string> topics;
-
       std::unique_ptr<socket_type> socket; // Socket must be unique_ptr since asio::ssl::stream<asio::ip::tcp::socket> is not movable
       std::mutex socket_close_mutex;
 
@@ -327,6 +316,11 @@ namespace mrpt::web {
         std::unique_lock<std::mutex> lock(connections_mutex);
         auto copy = connections;
         return copy;
+      }
+      bool containsConnection(std::shared_ptr<Connection> _conn){
+        std::unique_lock<std::mutex> lock(connections_mutex);
+        if(connections.find(_conn) == connections.end()) return false;
+        return true;
       }
     };
 
@@ -568,7 +562,7 @@ namespace mrpt::web {
           }
           std::istream stream(&connection->read_buffer);
 
-          std::array<unsigned char, 2> first_bytes;
+          unsigned char first_bytes[2];
           stream.read((char *)&first_bytes[0], 2);
 
           unsigned char fin_rsv_opcode = first_bytes[0];
@@ -592,7 +586,7 @@ namespace mrpt::web {
               if(!ec) {
                 std::istream stream(&connection->read_buffer);
 
-                std::array<unsigned char, 2> length_bytes;
+                unsigned char length_bytes[2];
                 stream.read((char *)&length_bytes[0], 2);
 
                 std::size_t length = 0;
@@ -615,7 +609,7 @@ namespace mrpt::web {
               if(!ec) {
                 std::istream stream(&connection->read_buffer);
 
-                std::array<unsigned char, 8> length_bytes;
+                unsigned char length_bytes[8];
                 stream.read((char *)&length_bytes[0], 8);
 
                 std::size_t length = 0;
@@ -654,7 +648,7 @@ namespace mrpt::web {
           std::istream istream(&connection->read_buffer);
 
           // Read mask
-          std::array<unsigned char, 4> mask;
+          unsigned char mask[4];
           istream.read((char *)&mask[0], 4);
 
           std::shared_ptr<Message> message;

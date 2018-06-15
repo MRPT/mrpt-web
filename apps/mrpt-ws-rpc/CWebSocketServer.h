@@ -2,7 +2,6 @@
 
 #include <mrpt/web/CWebSocket.h>
 #include <mrpt/web/CAbstractServerConnector.h>
-#include <mrpt/web/CPubSubManagerBase.h>
 
 namespace mrpt::web
 {
@@ -12,9 +11,8 @@ namespace mrpt::web
 	WsServer::Endpoint& m_endpoint;
 	std::string m_str;
 	std::thread m_thread;
-  	std::shared_ptr<CPubSubManagerBase> m_manager;
   public:
-	CWebSocketServer(unsigned short port, std::shared_ptr<CPubSubManagerBase> manager):m_endpoint(m_server.endpoint["^/?$"]), m_manager(manager) {
+	CWebSocketServer(unsigned short port):m_endpoint(m_server.endpoint["^/?$"]) {
 		m_server.config.port = port;
 	}
 	/** This method launched the listening loop that will handle client connections.
@@ -71,12 +69,16 @@ namespace mrpt::web
 		//Code here
 		//Capture SIGINT and SIGTERM to perform a clean shutdown
 		// Check for this code how to do this
-		
-		//--------------------------------
-		// Clean Exit Extra code
-
-		//--------------------------------
 		m_thread.join();
+	}
+	/**
+	 * This methods checks if the connection is still alive
+	 * For this it checks if the endpoint still stores the
+	 * connection
+	 */
+	bool checkConnectionLive(std::shared_ptr<WsServer::Connection> _conn)
+	{
+        return m_endpoint.containsConnection(_conn);
 	}
   };
 }

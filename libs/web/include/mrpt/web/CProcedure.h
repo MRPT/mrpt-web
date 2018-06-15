@@ -9,10 +9,10 @@ namespace mrpt::web
     public:
         CProcedure() {}
         CProcedure(std::string name, procedure type): procedureName(name), procedureType(type) {}
-        const std::string& GetProcedureName() const { return procedureName; }
-        procedure GetProcedureType() const { return procedureType; }
+        inline const std::string& GetProcedureName() const { return procedureName; }
+        inline procedure getProcedureType() const { return procedureType; }
     private:
         std::string procedureName;
         procedure procedureType;    
     };
-}
+} //namespace mrpt::web

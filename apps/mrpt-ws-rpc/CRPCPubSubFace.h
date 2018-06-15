@@ -9,9 +9,9 @@ class CRPCPubSubAbstract : public ServerInterface<CRPCPubSubAbstract>
     public:
         CRPCPubSubAbstract()
         {
-            this->bindAndAddPushMethod(mrpt::web::CProcedure("Publisher.Advertise", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Publisher_AdvertiseI);
+            this->bindAndAddPushMethod(mrpt::web::CProcedure("Publisher.advertise", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Publisher_AdvertiseI);
             this->bindAndAddMethod(mrpt::web::CProcedure("Publish", procedure::METHOD), &CRPCPubSubAbstract::PublishI);
-            this->bindAndAddPushMethod(mrpt::web::CProcedure("Publisher.Unadvertise",procedure::PUSHMETHOD), &CRPCPubSubAbstract::Publisher_UnadvertiseI);
+            this->bindAndAddPushMethod(mrpt::web::CProcedure("Publisher.unadvertise",procedure::PUSHMETHOD), &CRPCPubSubAbstract::Publisher_UnadvertiseI);
             this->bindAndAddPushMethod(mrpt::web::CProcedure("Subscriber.subscribe", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Subscriber_subscribeI);
             this->bindAndAddPushMethod(mrpt::web::CProcedure("Subscriber.unsubscribe", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Subscriber_unsubscribeI);
         }

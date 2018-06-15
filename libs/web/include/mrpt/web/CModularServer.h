@@ -1,4 +1,5 @@
 #pragma once
+#include <mrpt/web/CAbstractServerConnector.h>
 #include <mrpt/web/CWebSocket.h>
 #include <mrpt/web/CProcedure.h>
 #include <mrpt/web/CRequestHandler.h>
@@ -101,7 +102,7 @@ namespace mrpt::web
             }
         }
 
-        virtual void HandleMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output) override
+        virtual void handleMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output) override
         {
             auto pointer = m_methods.find(_proc.GetProcedureName());
             if(pointer != m_methods.end())
@@ -117,7 +118,7 @@ namespace mrpt::web
             }
         }
 
-        virtual void HandlePushMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output, ConnectionPointer _conn) override
+        virtual void handlePushMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output, ConnectionPointer _conn) override
         {
             auto pointer = m_pushmethods.find(_proc.GetProcedureName());
             if(pointer != m_pushmethods.end())

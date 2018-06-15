@@ -8,7 +8,7 @@ class CRequestHandler
     const std::string OP_ABSENT = "OP_ABSENT";
 public:
     CRequestHandler(CProcedureInvokationBase& base): m_outter(base) {}
-    void HandleRequest(const std::string &request, std::string &response, ConnectionPointer _conn)
+    void handleRequest(const std::string &request, std::string &response, ConnectionPointer _conn)
     {
         /** The procedure name is stored in
          *  proc_name = req["op"]
@@ -34,13 +34,13 @@ public:
         }
         auto _proc = m_procedures[proc_name];
         _input = req["params"];
-        if(_proc.GetProcedureType() == procedure::METHOD)
+        if(_proc.getProcedureType() == procedure::METHOD)
         {
-            m_outter.HandleMethodCall(_proc, _input, _output);
+            m_outter.handleMethodCall(_proc, _input, _output);
         }
-        else if(_proc.GetProcedureType() == procedure::PUSHMETHOD)
+        else if(_proc.getProcedureType() == procedure::PUSHMETHOD)
         {
-            m_outter.HandlePushMethodCall(_proc, _input, _output, _conn);
+            m_outter.handlePushMethodCall(_proc, _input, _output, _conn);
         }
         // Add the output to Json::Object res
         res["result"] = _output;
@@ -59,4 +59,4 @@ private:
     CProcedureInvokationBase& m_outter;
     std::unordered_map<std::string, CProcedure> m_procedures;
 };
-}
+} // namespace mrpt::web

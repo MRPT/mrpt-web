@@ -10,8 +10,8 @@ using ConnectionPointer = std::shared_ptr<WsServer::Connection>;
 class CProcedureInvokationBase
 {
 public:
-    virtual void HandleMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output) = 0;
-    virtual void HandlePushMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output, ConnectionPointer _conn) = 0;
+    virtual void handleMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output) = 0;
+    virtual void handlePushMethodCall(CProcedure& _proc, Json::Value const& _input, Json::Value& _output, ConnectionPointer _conn) = 0;
     virtual ~CProcedureInvokationBase() {}
 };
-}
+} //namespace mrpt::web

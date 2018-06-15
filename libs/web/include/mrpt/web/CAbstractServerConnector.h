@@ -25,14 +25,14 @@ public:
    */
   virtual bool StopListening() = 0;
 
-  void ProcessRequest(const std::string &request, std::string &response, ConnectionPointer _conn) {
+  inline void ProcessRequest(const std::string &request, std::string &response, ConnectionPointer _conn) {
 
       if(this->handler != NULL) {
-          this->handler->HandleRequest(request, response, _conn);
+          this->handler->handleRequest(request, response, _conn);
       }
   }
 
-  void SetHandler(CRequestHandler *handler)
+  inline void SetHandler(CRequestHandler *handler)
   {
       this->handler = handler;
   }

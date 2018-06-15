@@ -1,12 +1,12 @@
 #include <mrpt/poses/CPoint2D.h>
 #include <mrpt/poses/CPose3DQuat.h>
 
-#include <mrpt/web/CWebSocketServer.h>
 #include <mrpt/web/CModularServer.h>
 #include <mrpt/web/CSchemeArchive.h>
-#include <mrpt/web/CPubSubManager.h>
 
 #include "CRPCPubSubFace.h"
+#include "CPubSubManager.h"
+#include "CWebSocketServer.h"
 
 #include <cstdlib>
 #include <functional>
@@ -76,12 +76,13 @@ int main(int argc,char* argv[])
   try{
     std::unique_ptr<CModularServer<>> jsonrpcIpcServer;
     using FullServer = CModularServer< CRPCPubSub>;
-    // Managers for Publishers and Subscibers
-    auto manager = std::make_shared<CPubSubManager>();
     //Server without ConnectionStore and SubscriberManager
     // auto server = new CWebSocketServer(port);
     //Server with ConnectionStore and SubscriberManager
-    auto server = new CWebSocketServer(port, manager);
+    auto server = new CWebSocketServer(port);
+    
+    // Managers for Publishers and Subscibers
+    auto manager = std::make_shared<CPubSubManager<CWebSocketServer>>(server);
     
     jsonrpcIpcServer.reset(new FullServer(
       new CRPCPubSub(manager)   // RPC stub for PubSub activity
@@ -90,10 +91,10 @@ int main(int argc,char* argv[])
     jsonrpcIpcServer->addConnector(server);
 
     // Server starts listening
-    server->StartListening();
+    jsonrpcIpcServer->StartListening();
     getchar();
     // Server stops listening to connections
-    server->StopListening();
+    jsonrpcIpcServer->StopListening();
   }
   catch(const std::exception& e)
   {
