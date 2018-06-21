@@ -24,11 +24,11 @@ namespace mrpt::web
 		m_endpoint.on_message = [&](std::shared_ptr<WsServer::Connection> connection,
 		 						std::shared_ptr<WsServer::Message> message) {
 									std::string message_str = message->string();
-									std::cout << "Message : " << message_str << std::endl; 
+									std::cout << "Message : " << message_str << std::endl;
 									//Process the output
 									std::string output_str;
 									this->ProcessRequest(message_str, output_str, connection);
-									//Create the stream to send output			
+									//Create the stream to send output
 									auto send_stream = std::make_shared<WsServer::SendStream>();
 									*send_stream << output_str;
 									//
@@ -45,7 +45,7 @@ namespace mrpt::web
 		};
 		m_endpoint.on_close = [](std::shared_ptr<WsServer::Connection> connection, int status, const std::string& reason) {
 			std::cout << "Server: closed connection " << connection.get() << " with status code" << status << std::endl;
-			//Remove the dead Connection from the PubSubManager	
+			//Remove the dead Connection from the PubSubManager
 		};
 		// See RFC 6455 7.4.1 for status codes
 		m_endpoint.on_error = [](std::shared_ptr<WsServer::Connection> connection, const mrpt::web::error_code &ec) {
@@ -60,7 +60,7 @@ namespace mrpt::web
 		// Move the thread to class member m_thread
 		server_thread.swap(m_thread);
 	}
-	/** 
+	/**
 	 * This method stops the listening loop that will handle client connections
 	 * @return True if successful, false otherwise or if not listening.
 	 */

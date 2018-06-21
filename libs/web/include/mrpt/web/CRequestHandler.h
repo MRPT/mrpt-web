@@ -4,6 +4,7 @@ namespace mrpt::web
 {
 class CRequestHandler
 {
+    #define SERVICE_CALL "service_response"
     const std::string OP_FIELD_ABSENT = "OP_FIELD_ABSENT";
     const std::string OP_ABSENT = "OP_ABSENT";
 public:
@@ -21,7 +22,7 @@ public:
         const std::string proc_name = req.get("op",OP_FIELD_ABSENT).asString();
         //Prepare base result Json::Value res with the id and version
         res["id"] = req["id"];  //Add checks for presence of id in req
-        res["v"] = req["v"]; 
+        res["v"] = req["v"];
         if(proc_name == OP_FIELD_ABSENT)
         {
             //Return some error code
@@ -42,6 +43,10 @@ public:
         {
             m_outter.handlePushMethodCall(_proc, _input, _output, _conn);
         }
+        //Add default result op
+        auto op = res.get("op",SERVICE_CALL);
+        if(op == SERVICE_CALL) res["op"] = SERVICE_CALL;
+
         // Add the output to Json::Object res
         res["result"] = _output;
 
@@ -54,7 +59,7 @@ public:
     void AddProcedure(const CProcedure& _proc)
     {
         m_procedures[_proc.GetProcedureName()] = _proc;
-    } 
+    }
 private:
     CProcedureInvokationBase& m_outter;
     std::unordered_map<std::string, CProcedure> m_procedures;

@@ -28,21 +28,29 @@ public:
   Json::Value Publisher_Advertise(const Json::Value& request, ConnectionPointer _conn) override
   {
     Json::Value ret;
-    auto ptr = _conn.get();
-    std::cout << ptr << std::endl;
-    ret["clientID"] = ptr;
+    const std::string topic = request.get("topic", "").asString();
+    const std::string type = request.get("type", "").asString();
+    const bool latch = request.get("latch",false).asBool();
+    const int queue_size = request.get("queue_size",100).asInt();
+    m_manager->addPublisherToTopic(topic,type);
+    ret["success"] = true;
     return ret;
   }
   Json::Value Publish(const Json::Value& request) override
   {
     Json::Value ret;
+    const std::string topic = request.get("topic","").asString();
+    const auto msg = request["message"];
+    m_manager->publishMessageToTopic(topic, msg);
     ret["success"] = true;
     return ret;
   }
   Json::Value Publisher_Unadvertise(const Json::Value& request, ConnectionPointer _conn) override
   {
     Json::Value ret;
-
+    const std::string topic = request.get("topic", "").asString();
+    m_manager->removePublisherFromTopic(topic);
+    ret["success"] = true;
     return ret;
   }
   Json::Value Subscriber_subscribe(const Json::Value& request, ConnectionPointer _conn) override
@@ -55,6 +63,16 @@ public:
   {
     Json::Value ret;
 
+    return ret;
+  }
+  Json::Value add_three_ints(const Json::Value& request) override
+  {
+    Json::Value req = request;
+    Json::Value ret;
+    int a = req.get("a",0).asInt();
+    int b = req.get("b",0).asInt();
+    int c = req.get("c",0).asInt();
+    ret["sum"] = (int)(a+b+c);
     return ret;
   }
 private:
@@ -80,10 +98,10 @@ int main(int argc,char* argv[])
     // auto server = new CWebSocketServer(port);
     //Server with ConnectionStore and SubscriberManager
     auto server = new CWebSocketServer(port);
-    
+
     // Managers for Publishers and Subscibers
     auto manager = std::make_shared<CPubSubManager<CWebSocketServer>>(server);
-    
+
     jsonrpcIpcServer.reset(new FullServer(
       new CRPCPubSub(manager)   // RPC stub for PubSub activity
     ));

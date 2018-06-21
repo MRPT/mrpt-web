@@ -13,6 +13,6 @@ namespace mrpt::web
         inline procedure getProcedureType() const { return procedureType; }
     private:
         std::string procedureName;
-        procedure procedureType;    
+        procedure procedureType;
     };
 } //namespace mrpt::web

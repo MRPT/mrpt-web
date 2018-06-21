@@ -21,7 +21,7 @@
 #include "common/server_certificate.hpp"
 #include "common/ssl_stream.hpp"
 
-#include <mrpt/web/CAbstractServerConnector.h>  
+#include <mrpt/web/CAbstractServerConnector.h>
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -438,7 +438,7 @@ public:
         derived().ws().text(derived().ws().got_text());
         std::string request_str = boost::beast::buffers_to_string(buffer_.data());
         std::string response_str = m_request(request_str);
-        
+
         derived().ws().async_write(
             boost::asio::buffer(response_str, response_str.size()),
             boost::asio::bind_executor(
@@ -636,7 +636,7 @@ public:
 
 template<class Body, class Allocator>
 void
-make_websocket_session(std::function<std::string(const std::string &str)> request,    
+make_websocket_session(std::function<std::string(const std::string &str)> request,
     tcp::socket socket,
     http::request<Body, http::basic_fields<Allocator>> req)
 {
@@ -1291,7 +1291,7 @@ private:
     std::thread m_thread;
     tcp::endpoint m_endpoint;
     int threads_;
-    std::shared_ptr<std::string const> doc_root_;   
+    std::shared_ptr<std::string const> doc_root_;
 
 public:
     boost:: asio::io_context ioc;
@@ -1312,13 +1312,13 @@ public:
     }
     ~CWebSocketAdvanced()
     {
-        //Capture SIGINT and SIGTERM to perform a clean shutdown 
+        //Capture SIGINT and SIGTERM to perform a clean shutdown
         boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
         signals.async_wait(
             [&](boost::system::error_code const&, int)
             {
                 // Stop the `io_context` . This will cause `run()`
-                // to return immediately, eventually destroying the 
+                // to return immediately, eventually destroying the
                 // `io_context` and all of the sockets in it.
                 ioc.stop();
             }
@@ -1361,16 +1361,16 @@ public:
     /**
      * This method stops the listening loop that will handle client connections.
      * @return True if successful, false otherwise or if not listening.
-     */    
+     */
     bool StopListening() override
     {
-        //Capture SIGINT and SIGTERM to perform a clean shutdown 
+        //Capture SIGINT and SIGTERM to perform a clean shutdown
         boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
         signals.async_wait(
             [&](boost::system::error_code const&, int)
             {
                 // Stop the `io_context` . This will cause `run()`
-                // to return immediately, eventually destroying the 
+                // to return immediately, eventually destroying the
                 // `io_context` and all of the sockets in it.
                 ioc.stop();
             }

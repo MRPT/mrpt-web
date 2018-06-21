@@ -37,8 +37,31 @@ namespace mrpt::web
         std::string m_topic;
         std::unordered_set<ConnectionPointer> m_connections;
     };
+    class PublisherMetaData
+    {
+    public:
+      PublisherMetaData(const std::string& topic, const std::string& type, const bool& latch, const int queue_size):
+        m_topic(topic), m_type(type), m_latch(latch), m_queue_size(queue_size) {}
+      std::string getTopic() { return m_topic; }
+      std::string getType() { return m_type; }
+      bool getLatch() { return m_latch; }
+      int getQueueSize() { return m_queue_size; }
+    private:
+      const std::string m_topic;
+      const std::string m_type;
+      const bool m_latch;
+      const int m_queue_size;
+    };
     public:
     CPubSubManager(SERVER* connector_) : m_connector(connector_) {}
+    inline virtual void addPublisherToTopic(const std::string& topic,const std::string& type,const bool latch = false, const int queue_size = 100)
+    {
+      // std::cout << "New incoming publisher on topic" << topic << std::endl;
+    }
+    inline virtual void removePublisherFromTopic(const std::string& topic)
+    {
+      // std::cout << "Removing the topic "<< topic << std::endl;
+    }
     inline virtual int addSubscriptionToTopic(const std::string& topic, ConnectionPointer _conn)
     {
         if(m_subscriptions.find(topic) == m_subscriptions.end())
@@ -46,7 +69,7 @@ namespace mrpt::web
             m_subscriptions[topic] = std::make_shared<TopicDataStore>(topic);
         }
         auto &store = m_subscriptions[topic];
-        store->addConnection(_conn); 
+        store->addConnection(_conn);
     }
     inline virtual void removeSubscriptionFromTopic(const std::string& topic, ConnectionPointer _conn)
     {
@@ -56,7 +79,7 @@ namespace mrpt::web
     }
     inline virtual void publishMessageToTopic(const std::string& topic,const Json::Value& msg)
     {
-        return;
+      // std::cout << "Publishing the message " << msg << std::endl;
     }
     inline virtual const std::vector<ConnectionPointer> getSubscribedConnections(const std::string& topic)
     {
@@ -70,7 +93,7 @@ namespace mrpt::web
     }
     private:
         std::unordered_map<std::string, std::shared_ptr<TopicDataStore>> m_subscriptions;
-        // std::unordered_map<std::string, std::shared_ptr<Publisher<>> m_publishers;
+        std::unordered_map<std::string, std::shared_ptr<PublisherMetaData>> m_publishers;
         SERVER* m_connector;
     };
 }

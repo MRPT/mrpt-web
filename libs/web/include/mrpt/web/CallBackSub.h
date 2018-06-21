@@ -9,7 +9,7 @@
 #include <memory>
 
 namespace mrpt::web
-{   
+{
 using ConnectionPointer = std::shared_ptr<WsServer::Connection>;
 /** template class for callback of certain MRPT data structures */
 template <typename MESSAGE_TYPE>
@@ -37,7 +37,7 @@ public:
          */
         Json::Value output_json = serialize(msg);
 
-        const std::string& output_str = Json::writeString(builder, output_json); 
+        const std::string& output_str = Json::writeString(builder, output_json);
         for(auto &connection : m_base->getSubscribedConnections(m_topic))
         {
             /** check if the connection is still live */

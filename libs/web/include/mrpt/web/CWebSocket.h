@@ -75,7 +75,7 @@ namespace mrpt::web {
         return streambuf.size();
       }
     };
-	
+
     class Connection : public std::enable_shared_from_this<Connection> {
       friend class SocketServerBase<socket_type>;
       friend class SocketServer<socket_type>;
@@ -118,7 +118,7 @@ namespace mrpt::web {
       long timeout_idle;
       std::unique_ptr<asio::steady_timer> timer;
       std::mutex timer_mutex;
-	  
+
       void close() noexcept {
         error_code ec;
         std::unique_lock<std::mutex> lock(socket_close_mutex); // The following operations seems to be needed to run sequentially

@@ -23,7 +23,7 @@ namespace mrpt::web
         public:
         using MethodPointer = AbstractMethodPointer<I>;
         using PushMethodPointer = AbstractPushMethodPointer<I>;
-        
+
         using MethodBinding = std::tuple<CProcedure, AbstractMethodPointer<I>>;
         using PushMethodBinding = std::tuple<CProcedure, AbstractPushMethodPointer<I>>;
         using Methods = std::vector<MethodBinding>;
@@ -50,7 +50,7 @@ namespace mrpt::web
         {
             //May be add some standard procedures
         }
-        
+
         virtual ~CModularServer() { StopListening(); }
 
         virtual void StartListening()

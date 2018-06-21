@@ -14,6 +14,8 @@ class CRPCPubSubAbstract : public ServerInterface<CRPCPubSubAbstract>
             this->bindAndAddPushMethod(mrpt::web::CProcedure("Publisher.unadvertise",procedure::PUSHMETHOD), &CRPCPubSubAbstract::Publisher_UnadvertiseI);
             this->bindAndAddPushMethod(mrpt::web::CProcedure("Subscriber.subscribe", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Subscriber_subscribeI);
             this->bindAndAddPushMethod(mrpt::web::CProcedure("Subscriber.unsubscribe", procedure::PUSHMETHOD), &CRPCPubSubAbstract::Subscriber_unsubscribeI);
+            this->bindAndAddMethod(mrpt::web::CProcedure("add_three_ints", procedure::METHOD), &CRPCPubSubAbstract::add_three_intsI);
+
         }
 
         inline virtual void Publisher_AdvertiseI(const Json::Value &request, Json::Value &response, mrpt::web::ConnectionPointer _conn)
@@ -36,10 +38,15 @@ class CRPCPubSubAbstract : public ServerInterface<CRPCPubSubAbstract>
         {
             response = this->Subscriber_unsubscribe(request, _conn);
         }
+        inline virtual void add_three_intsI(const Json::Value &request, Json::Value &response)
+        {
+            response = this->add_three_ints(request);
+        }
         virtual Json::Value Publisher_Advertise(const Json::Value& request, mrpt::web::ConnectionPointer _conn) = 0;
         virtual Json::Value Publish(const Json::Value& request) = 0;
         virtual Json::Value Publisher_Unadvertise(const Json::Value& request, mrpt::web::ConnectionPointer _conn) = 0;
         virtual Json::Value Subscriber_subscribe(const Json::Value& request, mrpt::web::ConnectionPointer _conn) = 0;
         virtual Json::Value Subscriber_unsubscribe(const Json::Value& request, mrpt::web::ConnectionPointer _conn) = 0;
+        virtual Json::Value add_three_ints(const Json::Value& request) = 0;
 };
 }

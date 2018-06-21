@@ -108,7 +108,7 @@ class CSchemeArchive : public mrpt::serialization::CSchemeArchiveBase_impl
         return mrpt::serialization::CSchemeArchiveBase(std::make_unique<CSchemeArchive<SCHEME_CAPABLE>>(m_val[(int)idx]));
     }
     virtual mrpt::serialization::CSchemeArchiveBase operator[](std::string str) override
-    {  
+    {
         return mrpt::serialization::CSchemeArchiveBase(std::make_unique<CSchemeArchive<SCHEME_CAPABLE>>(m_val[std::string(str)]));
     }
 
