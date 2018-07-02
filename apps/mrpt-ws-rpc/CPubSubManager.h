@@ -79,7 +79,6 @@ namespace mrpt::web
     }
     inline virtual void publishMessageToTopic(const std::string& topic,const Json::Value& msg)
     {
-      // std::cout << "Publishing the message " << msg << std::endl;
     }
     inline virtual const std::vector<ConnectionPointer> getSubscribedConnections(const std::string& topic)
     {

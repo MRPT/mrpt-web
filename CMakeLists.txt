@@ -12,7 +12,7 @@ PROJECT(mrpt-web)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 set (CMAKE_CXX_STANDARD 14)  # Require C++14
 
-find_package(MRPT REQUIRED core poses rtti slam )
+find_package(MRPT REQUIRED core poses rtti slam topography)
 
 find_package( Threads )
 
@@ -32,3 +32,4 @@ HINT "${LIBJSON-RPC-CPP_ROOT}/bin/")
 # Lib:
 add_subdirectory(libs/web)
 add_subdirectory(apps/mrpt-ws-rpc)
+add_subdirectory(apps/rawlog-viewer)

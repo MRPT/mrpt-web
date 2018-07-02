@@ -3,6 +3,10 @@
 
 #include <mrpt/web/CModularServer.h>
 #include <mrpt/web/CSchemeArchive.h>
+#include <mrpt/web/CallBackSub.h>
+#include <mrpt/web/json_config.h>
+
+#include <mrpt/serialization/CSchemeArchiveBase.h>
 
 #include "CRPCPubSubFace.h"
 #include "CPubSubManager.h"
@@ -56,13 +60,20 @@ public:
   Json::Value Subscriber_subscribe(const Json::Value& request, ConnectionPointer _conn) override
   {
     Json::Value ret;
-
+    const std::string topic = request.get("topic","").asString();
+    const std::string type = request.get("type","").asString();
+    const int throttle_rate = request.get("throttle_rate", 0).asInt();
+    const int queue_length = request.get("queue_length", 0).asInt();
+    m_manager->addSubscriptionToTopic(topic, _conn);
+    ret["success"] = true;
     return ret;
   }
   Json::Value Subscriber_unsubscribe(const Json::Value& request, ConnectionPointer _conn) override
   {
     Json::Value ret;
-
+    const std::string topic = request.get("topic","").asString();
+    m_manager->removeSubscriptionFromTopic(topic, _conn);
+    ret["success"] = true;
     return ret;
   }
   Json::Value add_three_ints(const Json::Value& request) override
@@ -91,6 +102,11 @@ int main(int argc,char* argv[])
   }
   auto const address = boost::asio::ip::make_address(argv[1]);
   auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
+  Json::Value val;
+  CSchemeArchiveBase out(std::make_unique<CSchemeArchive<Json::Value>>(val));
+  CPoint2D pt;
+  out = pt;
+  std::cout << val << std::endl;
   try{
     std::unique_ptr<CModularServer<>> jsonrpcIpcServer;
     using FullServer = CModularServer< CRPCPubSub>;
@@ -108,8 +124,30 @@ int main(int argc,char* argv[])
 
     jsonrpcIpcServer->addConnector(server);
 
+
     // Server starts listening
     jsonrpcIpcServer->StartListening();
+    //add dummy publisher on topic '/path' for testing
+
+    std::thread pub_thread1([&](){
+      std::string topic = "/path";
+      CallBackSub<CPoint2D> point_sub(topic, manager.get() );
+      while(1) {
+      CPoint2D pt;
+      point_sub(pt);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+      }
+    });
+
+    std::thread pub_thread2([&](){
+      std::string topic = "/pose";
+      CallBackSub<CPose3DQuat> pose_sub(topic, manager.get() );
+      while(1) {
+        CPose3DQuat ps;
+        pose_sub(ps);
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+      }
+    });
     getchar();
     // Server stops listening to connections
     jsonrpcIpcServer->StopListening();
