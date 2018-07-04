@@ -102,7 +102,9 @@ void CRawlogTreeProcessor::getTreeIndex(Json::Value& val)
 Json::Value CRawlogTreeProcessor::getTreeDataPoint(size_t index) const
 {
   Json::Value ret;
-
+  if (index < (int)m_tree_nodes.size() && index >=0) {
+    mainDisplayProcessor(m_tree_nodes[index].data, ret);
+  }
   return ret;
 }
 
