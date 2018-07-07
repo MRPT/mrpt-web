@@ -22,5 +22,13 @@ cd build/app/mrpt-ws-rpc
 ```
 Example : 
 ```bash
-./mrpt-ws-rpc 127.0.0.1 5050 . 2
+./mrpt-ws-rpc 127.0.0.1 5000
 ```
+
+<b>Using the rawlog-viewer app</b>
+```bash
+cd build/app/rawlog-viewer
+./rawlog-viewer 127.0.0.1 5000
+```
+
+The app is meant to be used as RPC server for [rawlog-web-ui](https://github.com/rachit173/rawlog-web-ui).
