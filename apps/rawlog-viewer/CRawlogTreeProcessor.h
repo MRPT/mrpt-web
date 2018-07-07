@@ -8,6 +8,9 @@
 
 namespace mrpt::webapps
 {
+  void mainDisplayProcessor(const mrpt::serialization::CSerializable::Ptr& sel_obj,
+      const mrpt::obs::CRawlog* rawlog,
+      Json::Value& ret);
   struct TNodeData
   {
     public:

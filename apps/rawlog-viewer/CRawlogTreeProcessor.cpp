@@ -1,5 +1,7 @@
 #include "CRawlogTreeProcessor.h"
 #include <mrpt/system/datetime.h>
+
+#define MRPT_NO_WARN_BIG_HDR
 #include <mrpt/obs.h>
 
 using namespace mrpt;
@@ -102,7 +104,9 @@ void CRawlogTreeProcessor::getTreeIndex(Json::Value& val)
 Json::Value CRawlogTreeProcessor::getTreeDataPoint(size_t index) const
 {
   Json::Value ret;
-
+  if (index < (int)m_tree_nodes.size() && index >=0) {
+    mainDisplayProcessor(m_tree_nodes[index].data, m_rawlog, ret);
+  }
   return ret;
 }
 

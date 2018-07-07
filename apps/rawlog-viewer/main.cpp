@@ -112,8 +112,9 @@ class Stubs : public StubsAbstract
 		}
     Json::Value GetRawlogDataFromIndex(const Json::Value &request)
     {
+      const int index = request.get("index", 0).asInt();
       Json::Value ret;
-      ret = m_tree->getTreeDataPoint(0 /** temporary assignment*/);
+      ret = m_tree->getTreeDataPoint(index);
       return ret;
     }
     Json::Value GetRawlogTree(const Json::Value &request)

@@ -6,7 +6,7 @@ This repository contains server and client built on websocket transfer protocol 
 ```bash
 sudo apt-get install libargtable2-dev
 ```
-Other than this MRPT is also required 
+Other than this MRPT is also required
 
 <b>Build</b>
 ```build
@@ -20,7 +20,7 @@ make
 ```bash
 cd build/app/mrpt-ws-rpc
 ```
-Example : 
+Example :
 ```bash
 ./mrpt-ws-rpc 127.0.0.1 5000
 ```
