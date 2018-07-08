@@ -267,17 +267,17 @@ void mainDisplayProcessor(const mrpt::serialization::CSerializable::Ptr& sel_obj
       vector<CVectorDouble> samples(N);
       vector<float> xs(N), ys(N), ps(N), dumm(N, 0.1f);
 
-      // // Draw a set of random (x,y,phi) samples:
-      /** Needs to be uncommented once problem is resolved */
+      // // // Draw a set of random (x,y,phi) samples:
+      // /** Needs to be uncommented once problem is resolved */
       // act->poseChange->drawManySamples(N, samples);
 
-      // Pass to vectors and draw them:
-      for (unsigned int i = 0; i < N; i++)
-      {
-        xs[i] = samples[i][0];
-        ys[i] = samples[i][1];
-        ps[i] = RAD2DEG(samples[i][2]);
-      }
+      // // Pass to vectors and draw them:
+      // for (unsigned int i = 0; i < N; i++)
+      // {
+      //   xs[i] = samples[i][0];
+      //   ys[i] = samples[i][1];
+      //   ps[i] = RAD2DEG(samples[i][2]);
+      // }
 
       // lyAction2D_XY->SetData(xs, ys);
       // lyAction2D_PHI->SetData(ps, dumm);

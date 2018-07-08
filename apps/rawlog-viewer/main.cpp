@@ -41,6 +41,7 @@
 #include "CPubSubManager.h"
 #include "CWebSocketServer.h"
 #include "CRawlogTreeProcessor.h"
+#include "CFormMotionModel.h"
 #include "stubs.h"
 
 #include <cstdlib>
@@ -110,6 +111,36 @@ class Stubs : public StubsAbstract
 			m_experiment_length = 0;
       m_tree = std::make_shared<CRawlogTreeProcessor>();
 		}
+    Json::Value LoadMotionModel(const Json::Value &request)
+    {
+      Json::Value ret;
+      try{
+        const Json::Value in = request["sendData"];
+        CFormMotionModel motion_model;
+        if(in["model"]=="Gaussian")
+        {
+          motion_model.loadFromGaussian(in);
+        }
+        else if(in["model"]=="Thrun")
+        {
+          motion_model.loadFromThrun(in);
+        }
+        else
+        {
+          std::cout << "The model should be Gaussian or Thrun." << std::endl;
+        }
+        size_t first = in.get("first", 0).asInt();
+        size_t last = in.get("last", rawlog.size() - 1).asInt();
+        motion_model.applyToLoadedRawlog(rawlog, first, last);
+        ret["loaded"] = true;
+      }
+      catch(exception& e)
+      {
+        ret["err"] = e.what();
+        std::cout << e.what() << std::endl;
+      }
+      return ret;
+    }
     Json::Value GetRawlogDataFromIndex(const Json::Value &request)
     {
       const int index = request.get("index", 0).asInt();
