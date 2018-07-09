@@ -121,6 +121,15 @@ void mainDisplayProcessor(const mrpt::serialization::CSerializable::Ptr& sel_obj
          * Code Here
          *
          */
+        ret["laserScan"]["n"] = Xs.size();
+        for (int i = 0; i < Xs.size(); i++)
+        {
+          ret["laserScan"]["xs"][i] = Xs[i];
+        }
+        for (int i = 0; i < Ys.size(); i++)
+        {
+          ret["laserScan"]["ys"][i] = Ys[i];
+        }
     }
 
     if (classID == CLASS_ID(CObservationImage))
@@ -540,7 +549,8 @@ void mainDisplayProcessor(const mrpt::serialization::CSerializable::Ptr& sel_obj
         std::dynamic_pointer_cast<CObservation>(sel_obj));
       obs->unload();
     }
-
+    /** Add the classID name to schema */
+    ret["classID"] = classID->className;
   } // scope for sel_obj != NULL
   else
   {
