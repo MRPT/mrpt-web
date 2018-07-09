@@ -12,6 +12,7 @@ class StubsAbstract : public ServerInterface<StubsAbstract>
     this->bindAndAddMethod(mrpt::web::CProcedure("LoadRawlog", procedure::METHOD), &StubsAbstract::LoadRawlogI);
     this->bindAndAddMethod(mrpt::web::CProcedure("GetRawlogTree", procedure::METHOD), &StubsAbstract::GetRawlogTreeI);
     this->bindAndAddMethod(mrpt::web::CProcedure("GetRawlogDataFromIndex", procedure::METHOD), &StubsAbstract::GetRawlogDataFromIndexI);
+    this->bindAndAddMethod(mrpt::web::CProcedure("LoadMotionModel", procedure::METHOD), &StubsAbstract::LoadMotionModelI);
   }
 
   inline virtual void LoadRawlogI(const Json::Value &request, Json::Value &response)
@@ -29,8 +30,13 @@ class StubsAbstract : public ServerInterface<StubsAbstract>
     response = this->GetRawlogDataFromIndex(request);
   }
 
+  inline virtual void LoadMotionModelI(const Json::Value &request, Json::Value &response)
+  {
+    response = this->LoadMotionModel(request);
+  }
   virtual Json::Value LoadRawlog(const Json::Value& request) = 0;
   virtual Json::Value GetRawlogTree(const Json::Value& request) = 0;
   virtual Json::Value GetRawlogDataFromIndex(const Json::Value& request) = 0;
+  virtual Json::Value LoadMotionModel(const Json::Value& request) = 0;
 };
 }

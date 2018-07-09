@@ -1,6 +1,7 @@
 set(LIB_SRC
   CRawlogTreeProcessor.cpp
   main_display_processor.cpp
+  CFormMotionModel.cpp
 )
 
 add_library(lib_rawlog_app ${LIB_SRC})
