@@ -2,3 +2,5 @@ build/*
 *.gch
 scratch.txt
 .vscode/*
+Doxyfile
+docs/*

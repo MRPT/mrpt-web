@@ -121,7 +121,6 @@ void mainDisplayProcessor(const mrpt::serialization::CSerializable::Ptr& sel_obj
          * Code Here
          *
          */
-        ret["laserScan"]["n"] = Xs.size();
         for (int i = 0; i < Xs.size(); i++)
         {
           ret["laserScan"]["xs"][i] = Xs[i];
