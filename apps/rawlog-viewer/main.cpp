@@ -42,6 +42,7 @@
 #include "CWebSocketServer.h"
 #include "CRawlogTreeProcessor.h"
 #include "CFormMotionModel.h"
+#include "CFormRawMap.h"
 #include "stubs.h"
 
 #include <cstdlib>
@@ -146,6 +147,36 @@ class Stubs : public StubsAbstract
       const int index = request.get("index", 0).asInt();
       Json::Value ret;
       ret = m_tree->getTreeDataPoint(index);
+      return ret;
+    }
+    Json::Value GetMapAndPath(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnbtnGenerateClick(firstEntry, lastEntry, decimate, ret);
+      return ret;
+    }
+    Json::Value GetMapFromRTK(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnGenerateFromRTK(firstEntry, lastEntry, decimate, ret);
+      return ret;
+    }
+    Json::Value GetRandomPaths(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnbtnGeneratePathsClick(firstEntry, lastEntry, decimate, ret);
       return ret;
     }
     Json::Value GetRawlogTree(const Json::Value &request)
