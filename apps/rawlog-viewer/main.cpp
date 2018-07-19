@@ -42,6 +42,7 @@
 #include "CWebSocketServer.h"
 #include "CRawlogTreeProcessor.h"
 #include "CFormMotionModel.h"
+#include "CFormRawMap.h"
 #include "stubs.h"
 
 #include <cstdlib>
@@ -111,6 +112,36 @@ class Stubs : public StubsAbstract
 			m_experiment_length = 0;
       m_tree = std::make_shared<CRawlogTreeProcessor>();
 		}
+    Json::Value DrawRandomSamples(const Json::Value &request)
+    {
+      Json::Value ret;
+      try {
+        const Json::Value in = request["sendData"];
+        CFormMotionModel motion_model;
+        if (in["model"] == "Gaussian")
+        {
+          motion_model.loadFromGaussian(in);
+        }
+        else if(in["model"] == "Thrun")
+        {
+          motion_model.loadFromThrun(in);
+        }
+        else
+        {
+          std::cout << "The model should be Gaussian or Thrun. " << std::endl;
+        }
+        float x = request.get("Ax", 0).asFloat();
+        float y = request.get("Ay", 0).asFloat();
+        float phi = request.get("Aphi", 0).asFloat();
+        motion_model.drawRandomSamples(x, y, phi, ret);
+      }
+      catch(exception& e)
+      {
+        ret["err"] = e.what();
+        std::cout << e.what() << std::endl;
+      }
+      return ret;
+    }
     Json::Value LoadMotionModel(const Json::Value &request)
     {
       Json::Value ret;
@@ -146,6 +177,36 @@ class Stubs : public StubsAbstract
       const int index = request.get("index", 0).asInt();
       Json::Value ret;
       ret = m_tree->getTreeDataPoint(index);
+      return ret;
+    }
+    Json::Value GetMapAndPath(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnbtnGenerateClick(firstEntry, lastEntry, decimate, ret);
+      return ret;
+    }
+    Json::Value GetMapFromRTK(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnGenerateFromRTK(firstEntry, lastEntry, decimate, ret);
+      return ret;
+    }
+    Json::Value GetRandomPaths(const Json::Value &request)
+    {
+      CFormRawMap map_generator(rawlog);
+      size_t firstEntry = request.get("firstEntry", 0).asUInt();
+      size_t lastEntry = request.get("lastEntry", 0).asUInt();
+      size_t decimate = request.get("decimate", 0).asUInt();
+      Json::Value ret;
+      map_generator.OnbtnGeneratePathsClick(firstEntry, lastEntry, decimate, ret);
       return ret;
     }
     Json::Value GetRawlogTree(const Json::Value &request)
