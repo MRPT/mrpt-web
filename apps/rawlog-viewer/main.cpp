@@ -112,6 +112,36 @@ class Stubs : public StubsAbstract
 			m_experiment_length = 0;
       m_tree = std::make_shared<CRawlogTreeProcessor>();
 		}
+    Json::Value DrawRandomSamples(const Json::Value &request)
+    {
+      Json::Value ret;
+      try {
+        const Json::Value in = request["sendData"];
+        CFormMotionModel motion_model;
+        if (in["model"] == "Gaussian")
+        {
+          motion_model.loadFromGaussian(in);
+        }
+        else if(in["model"] == "Thrun")
+        {
+          motion_model.loadFromThrun(in);
+        }
+        else
+        {
+          std::cout << "The model should be Gaussian or Thrun. " << std::endl;
+        }
+        float x = request.get("Ax", 0).asFloat();
+        float y = request.get("Ay", 0).asFloat();
+        float phi = request.get("Aphi", 0).asFloat();
+        motion_model.drawRandomSamples(x, y, phi, ret);
+      }
+      catch(exception& e)
+      {
+        ret["err"] = e.what();
+        std::cout << e.what() << std::endl;
+      }
+      return ret;
+    }
     Json::Value LoadMotionModel(const Json::Value &request)
     {
       Json::Value ret;

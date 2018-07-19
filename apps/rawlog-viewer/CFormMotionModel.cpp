@@ -143,9 +143,12 @@ void CFormMotionModel::drawRandomSamples(float _x, float _y, float _phi, Json::V
     ps[i] = RAD2DEG(tmpPose.phi());
   }
   /** serialize the data to send for plotting
-   *
-   * Code here
-   *
    */
-
+  for (unsigned int i = 0; i < N; i++)
+  {
+    ret["position"]["xs"][i] = xs[i];
+    ret["position"]["ys"][i] = ys[i];
+    ret["orientation"]["xs"][i] = ps[i];
+    ret["orientation"]["ys"][i] = dumm[i];
+  }
 }

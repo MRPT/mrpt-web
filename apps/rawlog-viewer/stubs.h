@@ -15,7 +15,8 @@ class StubsAbstract : public ServerInterface<StubsAbstract>
     this->bindAndAddMethod(mrpt::web::CProcedure("LoadMotionModel", procedure::METHOD), &StubsAbstract::LoadMotionModelI);
     this->bindAndAddMethod(mrpt::web::CProcedure("GetMapAndPath", procedure::METHOD), &StubsAbstract::GetMapAndPathI);
     this->bindAndAddMethod(mrpt::web::CProcedure("GetMapFromRTK", procedure::METHOD), &StubsAbstract::GetMapFromRTKI);
-    this->bindAndAddMethod(mrpt::web::CProcedure("GetRandomPaths", procedure::METHOD), &StubsAbstract::GetRandomPaths);
+    this->bindAndAddMethod(mrpt::web::CProcedure("GetRandomPaths", procedure::METHOD), &StubsAbstract::GetRandomPathsI);
+    this->bindAndAddMethod(mrpt::web::CProcedure("DrawRandomSamples", procedure::METHOD), &StubsAbstract::DrawRandomSamplesI);
   }
 
   inline virtual void LoadRawlogI(const Json::Value &request, Json::Value &response)
@@ -48,9 +49,14 @@ class StubsAbstract : public ServerInterface<StubsAbstract>
     response = this->GetMapFromRTK(request);
   }
 
-  inline virtual void GetRandomPaths(const Json::Value &request, Json::Value &response)
+  inline virtual void GetRandomPathsI(const Json::Value &request, Json::Value &response)
   {
     response = this->GetRandomPaths(request);
+  }
+
+  inline virtual void DrawRandomSamplesI(const Json::Value &request, Json::Value &response)
+  {
+    response = this->DrawRandomSamples(request);
   }
 
   virtual Json::Value LoadRawlog(const Json::Value& request) = 0;
@@ -60,6 +66,6 @@ class StubsAbstract : public ServerInterface<StubsAbstract>
   virtual Json::Value GetMapAndPath(const Json::Value &request) = 0;
   virtual Json::Value GetMapFromRTK(const Json::Value &request) = 0;
   virtual Json::Value GetRandomPaths(const Json::Value &request) = 0;
-
+  virtual Json::Value DrawRandomSamples(const Json::Value &request) = 0;
 };
 }
