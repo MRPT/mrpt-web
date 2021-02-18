@@ -31,4 +31,4 @@ cd build/app/rawlog-viewer
 ./rawlog-viewer 127.0.0.1 5000
 ```
 
-The app is meant to be used as RPC server for [rawlog-web-ui](https://github.com/rachit173/rawlog-web-ui).
+The app is meant to be used as RPC server for [rawlog-web-ui](https://github.com/MRPT/rawlog-web-ui).
